@@ -48,7 +48,7 @@ public interface ScoreDao {
   @Query("SELECT * FROM Score WHERE code_length = :codeLength ORDER BY guess_count ASC LIMIT :recordCount")
   LiveData<List<Score>> selectBest(int codeLength, int recordCount);
 
-  @Query("SELECT code_length, AVG(guess_count) AS average_guess_count FROM Score GROUP BY code_length")
+  @Query("SELECT code_length, AVG(guess_count) AS average_guess_count FROM Score GROUP BY code_length ORDER BY code_length DESC")
   LiveData<List<ScoreSummary>> selectSummaries();
 
 }
