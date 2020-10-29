@@ -9,12 +9,10 @@ import edu.cnm.deepdive.codebreaker.model.entity.Score;
 import edu.cnm.deepdive.codebreaker.model.pojo.ScoreSummary;
 import io.reactivex.Completable;
 import io.reactivex.Single;
-import io.reactivex.functions.Action;
 import io.reactivex.schedulers.Schedulers;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.Callable;
 
 public class GameRepository {
 
