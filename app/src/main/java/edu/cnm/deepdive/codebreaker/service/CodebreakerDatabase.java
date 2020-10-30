@@ -6,15 +6,21 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverter;
 import androidx.room.TypeConverters;
+import edu.cnm.deepdive.codebreaker.model.dao.GameDao;
+import edu.cnm.deepdive.codebreaker.model.dao.GuessDao;
+import edu.cnm.deepdive.codebreaker.model.dao.MatchDao;
 import edu.cnm.deepdive.codebreaker.model.dao.ScoreDao;
+import edu.cnm.deepdive.codebreaker.model.entity.Game;
+import edu.cnm.deepdive.codebreaker.model.entity.Guess;
+import edu.cnm.deepdive.codebreaker.model.entity.Match;
 import edu.cnm.deepdive.codebreaker.model.entity.Score;
 import edu.cnm.deepdive.codebreaker.service.CodebreakerDatabase.Converters;
 import java.nio.ByteBuffer;
 import java.util.Date;
 import java.util.UUID;
 
-@Database(entities = {Score.class}, version = 1, exportSchema = true)
-@TypeConverters({Converters.class})
+@Database(entities = {Score.class, Match.class, Game.class, Guess.class}, version = 1, exportSchema = true)
+@TypeConverters({Converters.class, Match.State.class})
 public abstract class CodebreakerDatabase extends RoomDatabase {
 
   private static final String DB_NAME = "codebreaker_db";
@@ -30,6 +36,12 @@ public abstract class CodebreakerDatabase extends RoomDatabase {
   }
 
   public abstract ScoreDao getScoreDao();
+
+  public abstract MatchDao getMatchDao();
+
+  public abstract GameDao getGameDao();
+
+  public abstract GuessDao getGuessDao();
 
   private static class InstanceHolder {
 
