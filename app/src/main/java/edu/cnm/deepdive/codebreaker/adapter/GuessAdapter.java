@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import edu.cnm.deepdive.codebreaker.R;
 import edu.cnm.deepdive.codebreaker.databinding.ItemGuessBinding;
-import edu.cnm.deepdive.codebreaker.model.Code.Guess;
+import edu.cnm.deepdive.codebreaker.model.entity.Guess;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -36,7 +36,6 @@ public class GuessAdapter extends ArrayAdapter<Guess> {
         : ItemGuessBinding.inflate(inflater, parent, false);
     Guess guess = getItem(position);
     binding.guessNumber.setText(String.valueOf(position + 1));
-    //noinspection ConstantConditions
     binding.correct.setText(String.valueOf(guess.getCorrect()));
     binding.close.setText(Integer.toString(guess.getClose()));
     binding.guessContainer.removeAllViews();
