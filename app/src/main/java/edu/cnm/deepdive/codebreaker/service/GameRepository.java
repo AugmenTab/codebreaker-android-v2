@@ -1,6 +1,7 @@
 package edu.cnm.deepdive.codebreaker.service;
 
 import android.content.Context;
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import edu.cnm.deepdive.codebreaker.model.dao.GuessDao;
 import edu.cnm.deepdive.codebreaker.model.entity.Guess;
@@ -22,7 +23,7 @@ import java.util.Set;
 public class GameRepository {
 
   private static final String ILLEGAL_LENGTH_FORMAT =
-      "Invalid guess length: code length is %1$d; guess length is %2$d";
+      "Invalid guess length: code length is %1$d; guess length is %2$d.";
   private static final String ILLEGAL_CHARACTER_FORMAT =
       "Guess includes invalid characters: pool is \"%1$s\"; guess includes \"%2$s\".";
   private static final String VALID_CHARACTER_PATTERN_FORMAT = "[%s]";
@@ -43,16 +44,17 @@ public class GameRepository {
   public Single<Game> newGame(String pool, int codeLength, Random rng) {
     return Single.fromCallable(() -> createGame(pool, codeLength, rng))
         .subscribeOn(Schedulers.computation())
+        .observeOn(Schedulers.io())
         .flatMap((game) -> gameDao.insert(game)
             .map((id) -> {
               game.setId(id);
               return game;
             })
-        )
-        .subscribeOn(Schedulers.io());
+        );
   }
 
   public Single<Guess> guess(Game game, String text) {
+    // TODO Check if game is a solitaire (local-only) game, or a game from a match.
     return Single.fromCallable(() -> {
       validateGuess(game, text);
       Map<Character, Set<Integer>> letterMap = getLetterMap(text);
@@ -65,13 +67,13 @@ public class GameRepository {
       return guess;
     })
         .subscribeOn(Schedulers.computation())
+        .observeOn(Schedulers.io())
         .flatMap((guess) -> guessDao.insert(guess)
             .map((id) -> {
               guess.setId(id);
               return guess;
             })
-        )
-        .subscribeOn(Schedulers.io());
+        );
   }
 
   public LiveData<List<Guess>> getGuesses(Game game) {
@@ -80,44 +82,6 @@ public class GameRepository {
 
   public LiveData<List<ScoreSummary>> getSummaries() {
     return scoreDao.selectSummaries();
-  }
-
-  private Game createGame(String pool, int codeLength, Random rng) {
-    Game game = new Game();
-    game.setCodeLength(codeLength);
-    game.setPool(pool);
-    StringBuilder builder = new StringBuilder(codeLength);
-    int length = pool.length();
-    for (int i = 0; i < codeLength; i++) {
-      builder.append(pool.charAt(rng.nextInt(length)));
-    }
-    game.setCode(builder.toString());
-    return game;
-  }
-
-  private void validateGuess(Game game, String text) {
-    if (text.length() != game.getCodeLength()) {
-      throw new IllegalArgumentException(
-          String.format(ILLEGAL_LENGTH_FORMAT, game.getCodeLength(), text.length()));
-    }
-    String badCharacters =
-        text.replaceAll(String.format(VALID_CHARACTER_PATTERN_FORMAT, game.getPool()), "");
-    if (!badCharacters.isEmpty()) {
-      throw new IllegalArgumentException(
-          String.format(ILLEGAL_CHARACTER_FORMAT, game.getPool(), badCharacters));
-    }
-  }
-
-  private Map<Character, Set<Integer>> getLetterMap(String text) {
-    Map<Character, Set<Integer>> letterMap = new HashMap<>();
-    char[] letters = text.toCharArray();
-    for (int i = 0; i < letters.length; i++) {
-      char letter = letters[i];
-      Set<Integer> positions = letterMap.getOrDefault(letter, new HashSet<>());
-      positions.add(i);
-      letterMap.putIfAbsent(letter, positions);
-    }
-    return letterMap;
   }
 
   private int getClose(Map<Character, Set<Integer>> letterMap, char[] work) {
@@ -148,6 +112,46 @@ public class GameRepository {
       }
     }
     return correct;
+  }
+
+  @NonNull
+  private Map<Character, Set<Integer>> getLetterMap(String text) {
+    Map<Character, Set<Integer>> letterMap = new HashMap<>();
+    char[] letters = text.toCharArray();
+    for (int i = 0; i < letters.length; i++) {
+      char letter = letters[i];
+      Set<Integer> positions = letterMap.getOrDefault(letter, new HashSet<>());
+      positions.add(i);
+      letterMap.putIfAbsent(letter, positions);
+    }
+    return letterMap;
+  }
+
+  private void validateGuess(Game game, String text) {
+    if (text.length() != game.getCodeLength()) {
+      throw new IllegalArgumentException(
+          String.format(ILLEGAL_LENGTH_FORMAT, game.getCodeLength(), text.length()));
+    }
+    String badCharacters =
+        text.replaceAll(String.format(VALID_CHARACTER_PATTERN_FORMAT, game.getPool()), "");
+    if (!badCharacters.isEmpty()) {
+      throw new IllegalArgumentException(
+          String.format(ILLEGAL_CHARACTER_FORMAT, game.getPool(), badCharacters));
+    }
+  }
+
+  @NonNull
+  private Game createGame(String pool, int codeLength, Random rng) {
+    Game game = new Game();
+    game.setCodeLength(codeLength);
+    game.setPool(pool);
+    StringBuilder builder = new StringBuilder(codeLength);
+    int length = pool.length();
+    for (int i = 0; i < codeLength; i++) {
+      builder.append(pool.charAt(rng.nextInt(length)));
+    }
+    game.setCode(builder.toString());
+    return game;
   }
 
 }
