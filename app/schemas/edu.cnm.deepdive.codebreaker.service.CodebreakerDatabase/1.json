@@ -2,85 +2,8 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "0b5ca98329b13df8b7d7661f89ab49a7",
+    "identityHash": "9d2013556ae950131215e4d72566c1f5",
     "entities": [
-      {
-        "tableName": "Match",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`match_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `match_key` BLOB NOT NULL, `started` INTEGER NOT NULL, `deadline` INTEGER NOT NULL, `state` INTEGER NOT NULL)",
-        "fields": [
-          {
-            "fieldPath": "id",
-            "columnName": "match_id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "matchKey",
-            "columnName": "match_key",
-            "affinity": "BLOB",
-            "notNull": true
-          },
-          {
-            "fieldPath": "started",
-            "columnName": "started",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "deadline",
-            "columnName": "deadline",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "state",
-            "columnName": "state",
-            "affinity": "INTEGER",
-            "notNull": true
-          }
-        ],
-        "primaryKey": {
-          "columnNames": [
-            "match_id"
-          ],
-          "autoGenerate": true
-        },
-        "indices": [
-          {
-            "name": "index_Match_match_key",
-            "unique": true,
-            "columnNames": [
-              "match_key"
-            ],
-            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_Match_match_key` ON `${TABLE_NAME}` (`match_key`)"
-          },
-          {
-            "name": "index_Match_started",
-            "unique": false,
-            "columnNames": [
-              "started"
-            ],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_Match_started` ON `${TABLE_NAME}` (`started`)"
-          },
-          {
-            "name": "index_Match_deadline",
-            "unique": false,
-            "columnNames": [
-              "deadline"
-            ],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_Match_deadline` ON `${TABLE_NAME}` (`deadline`)"
-          },
-          {
-            "name": "index_Match_state",
-            "unique": false,
-            "columnNames": [
-              "state"
-            ],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_Match_state` ON `${TABLE_NAME}` (`state`)"
-          }
-        ],
-        "foreignKeys": []
-      },
       {
         "tableName": "Game",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`game_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `game_key` BLOB, `match_id` INTEGER, `pool` TEXT NOT NULL, `code` TEXT, `code_length` INTEGER NOT NULL, `started` INTEGER NOT NULL, FOREIGN KEY(`match_id`) REFERENCES `Match`(`match_id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
@@ -275,6 +198,130 @@
             ]
           }
         ]
+      },
+      {
+        "tableName": "Match",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`match_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `match_key` BLOB NOT NULL, `started` INTEGER NOT NULL, `deadline` INTEGER NOT NULL, `state` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "match_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "matchKey",
+            "columnName": "match_key",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "started",
+            "columnName": "started",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "deadline",
+            "columnName": "deadline",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "state",
+            "columnName": "state",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "match_id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_Match_match_key",
+            "unique": true,
+            "columnNames": [
+              "match_key"
+            ],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_Match_match_key` ON `${TABLE_NAME}` (`match_key`)"
+          },
+          {
+            "name": "index_Match_started",
+            "unique": false,
+            "columnNames": [
+              "started"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Match_started` ON `${TABLE_NAME}` (`started`)"
+          },
+          {
+            "name": "index_Match_deadline",
+            "unique": false,
+            "columnNames": [
+              "deadline"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Match_deadline` ON `${TABLE_NAME}` (`deadline`)"
+          },
+          {
+            "name": "index_Match_state",
+            "unique": false,
+            "columnNames": [
+              "state"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Match_state` ON `${TABLE_NAME}` (`state`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "user_profile",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`user_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `display_name` TEXT NOT NULL, `oauth_key` TEXT NOT NULL, `created` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "user_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "displayName",
+            "columnName": "display_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "oauthKey",
+            "columnName": "oauth_key",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "created",
+            "columnName": "created",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "user_id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_user_profile_oauth_key",
+            "unique": true,
+            "columnNames": [
+              "oauth_key"
+            ],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_user_profile_oauth_key` ON `${TABLE_NAME}` (`oauth_key`)"
+          }
+        ],
+        "foreignKeys": []
       }
     ],
     "views": [
@@ -285,7 +332,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0b5ca98329b13df8b7d7661f89ab49a7')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '9d2013556ae950131215e4d72566c1f5')"
     ]
   }
 }
