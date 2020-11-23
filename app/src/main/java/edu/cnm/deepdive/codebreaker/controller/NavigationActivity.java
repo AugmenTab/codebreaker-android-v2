@@ -36,9 +36,11 @@ public class NavigationActivity extends AppCompatActivity {
 
   private void setupNavigation() {
     appBarConfig = new Builder(
-        R.id.navigation_game, R.id.navigation_summary, R.id.navigation_settings)
-        .setOpenableLayout(binding.drawerLayout)
-        .build();
+        R.id.navigation_game,
+        R.id.navigation_summary,
+        R.id.navigation_settings,
+        R.id.navigation_match
+    ).setOpenableLayout(binding.drawerLayout).build();
     //noinspection ConstantConditions
     navController = ((NavHostFragment) getSupportFragmentManager()
         .findFragmentById(R.id.nav_host_fragment)).getNavController();
