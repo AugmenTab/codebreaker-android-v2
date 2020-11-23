@@ -29,9 +29,7 @@ public class GuessRecyclerAdapter extends RecyclerView.Adapter<Holder> {
       super(itemView);
     }
 
-    private void bind(Guess guess) {
-
-    }
+    private void bind(Guess guess) {}
 
   }
 
