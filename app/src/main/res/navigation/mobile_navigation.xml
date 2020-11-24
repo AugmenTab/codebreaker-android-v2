@@ -23,9 +23,44 @@
     tools:layout="@layout/fragment_summary"/>
 
   <fragment
-    android:id="@+id/navigation_match"
-    android:label="@string/title_matches"
+    android:id="@+id/navigation_current_matches"
+    android:label="@string/title_current_matches"
     android:name="edu.cnm.deepdive.codebreaker.controller.MatchFragment"
-    tools:layout="@layout/fragment_match"/>
+    tools:layout="@layout/fragment_match">
+
+    <argument
+      android:name="variation"
+      app:argType="edu.cnm.deepdive.codebreaker.controller.MatchFragment$Variation"
+      android:defaultValue="CURRENT"/>
+
+  </fragment>
+
+  <fragment
+    android:id="@+id/navigation_available_matches"
+    android:label="@string/title_available_matches"
+    android:name="edu.cnm.deepdive.codebreaker.controller.MatchFragment"
+    tools:layout="@layout/fragment_match">
+
+    <argument
+      android:name="variation"
+      app:argType="edu.cnm.deepdive.codebreaker.controller.MatchFragment$Variation"
+      android:defaultValue="AVAILABLE"/>
+
+  </fragment>
+
+  <fragment
+    android:id="@+id/navigation_closed_matches"
+    android:label="@string/title_closed_matches"
+    android:name="edu.cnm.deepdive.codebreaker.controller.MatchFragment"
+    tools:layout="@layout/fragment_match">
+
+    <argument
+      android:name="variation"
+      app:argType="edu.cnm.deepdive.codebreaker.controller.MatchFragment$Variation"
+      android:defaultValue="CLOSED"/>
+
+  </fragment>
+
+
 
 </navigation>

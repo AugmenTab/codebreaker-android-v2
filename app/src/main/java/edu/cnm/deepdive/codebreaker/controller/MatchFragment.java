@@ -32,6 +32,9 @@ public class MatchFragment extends Fragment {
       @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
     binding = FragmentMatchBinding.inflate(inflater);
+    //noinspection ConstantConditions
+    Variation variation = MatchFragmentArgs.fromBundle(getArguments()).getVariation();
+    binding.placeholder.setText(variation.toString());
     // Access references in binding to set contents of view objects, as appropriate.
     return binding.getRoot();
   }
@@ -41,4 +44,9 @@ public class MatchFragment extends Fragment {
     super.onViewCreated(view, savedInstanceState);
     // Get reference to a ViewModel instance, set observers on LiveData.
   }
+
+  public enum Variation {
+    AVAILABLE, CURRENT, CLOSED;
+  }
+
 }

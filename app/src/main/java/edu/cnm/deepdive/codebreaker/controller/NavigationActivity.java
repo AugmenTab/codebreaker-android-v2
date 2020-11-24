@@ -39,7 +39,9 @@ public class NavigationActivity extends AppCompatActivity {
         R.id.navigation_game,
         R.id.navigation_summary,
         R.id.navigation_settings,
-        R.id.navigation_match
+        R.id.navigation_current_matches,
+        R.id.navigation_available_matches,
+        R.id.navigation_closed_matches
     ).setOpenableLayout(binding.drawerLayout).build();
     //noinspection ConstantConditions
     navController = ((NavHostFragment) getSupportFragmentManager()

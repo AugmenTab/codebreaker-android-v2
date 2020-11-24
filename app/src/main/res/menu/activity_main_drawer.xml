@@ -12,8 +12,16 @@
       android:title="@string/title_current_game"/>
 
     <item
-      android:id="@+id/navigation_match"
-      android:title="@string/title_matches"/>
+      android:id="@+id/navigation_current_matches"
+      android:title="@string/title_current_matches"/>
+
+    <item
+      android:id="@+id/navigation_available_matches"
+      android:title="@string/title_available_matches"/>
+
+    <item
+      android:id="@+id/navigation_closed_matches"
+      android:title="@string/title_closed_matches"/>
 
     <item
       android:id="@+id/navigation_summary"
